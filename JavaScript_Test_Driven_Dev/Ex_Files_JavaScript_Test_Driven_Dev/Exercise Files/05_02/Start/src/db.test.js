@@ -14,7 +14,31 @@ describe('getUserByUsername', () => {
 
         const db = client.db('TEST_DB');
 
-        // tests
+        // ACTUAL TEST
+
+        const fakeData = [{
+            id: '123',
+            username: 'abc',
+            email: 'abc@gmail.com',
+        }, {
+            id: '124',
+            username: 'wrong',
+            email: 'wrong@wrong.com',
+        }];
+        
+        await db.collection('users').insertMany(fakeData)
+        const actual = await getUserByUsername('abc')
+        const finalDBState = await db.collection('users').find().toArray()
+        await db.dropDatabse()
+
+        const expected = {
+            id: '123',
+            username: 'abc',
+            email: 'abc@gmail.com',
+        }
+
+        expect(actual).to.deep.equal(expected)
+        expect(finalDBState).to.deep.equal(fakeData)
 
         client.close();
     });
