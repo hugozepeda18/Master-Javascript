@@ -35,7 +35,8 @@ describe('getUserByUsername', () => {
             email: 'abc@gmail.com',
         };
 
-        expect(actual).to.deep.equal(expected);
-        expect(finalDBState).to.deep.equal(fakeData);
+        //To ignore object properties
+        expect(actual).excludingEvery('_id').to.deep.equal(expected);
+        expect(finalDBState).excludingEvery('_id')to.deep.equal(fakeData);
     });
 });
